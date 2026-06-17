@@ -1,6 +1,25 @@
-# The3rdEye
-Snap camera shots from a target's phone or PC webcam with nothing more than a link.
-![The3rdEye](The3rdEye-logo.png)
+<p align="center">
+  <img src="The3rdEye.png" alt="The3rdEye"> 
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-1.0-green?style=for-the-badge">
+  <img src="https://img.shields.io/github/license/r4tur1/The3rdEye.svg?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/stars/r4tur1/The3rdEye?style=for-the-badge">
+  <img src="https://img.shields.io/github/issues/r4tur1/The3rdEye?color=red&style=for-the-badge">
+  <img src="https://img.shields.io/github/forks/r4tur1/The3rdEye?color=teal&style=for-the-badge">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Author-r4tur1-blue?style=flat-square">
+  <img src="https://img.shields.io/badge/Open%20Source-Yes-darkgreen?style=flat-square">
+  <img src="https://img.shields.io/badge/Maintained%3F-Yes-lightblue?style=flat-square">
+  <img src="https://img.shields.io/badge/Written%20In-Bash-darkcyan?style=flat-square">
+</p>
+
+<p align="center">
+  <b>An automated tool to hack the camera of the target and click their pics just by sharing a link.</b>
+</p>
 
 # What is The3rdEye?
 <p>The3rdEye spins up a decoy webpage on an integrated PHP server and punches it out to the internet using Localhost, CloudFlare Tunnel, or Localhost.run. You send the generated link to a target; if they grant camera access, their photo is captured instantly. A built-in GPS locator can also pull their physical coordinates during the session.</p>
@@ -59,5 +78,4 @@ bash cleanup.sh
 
 
 ### Disclaimer
-<p>The3rdEye is built for authorized penetration testing only. Misuse is on the user, not the developer.</p>
-```
+<p><b>The3rdEye is built for authorized penetration testing only. Misuse is on the user, not the developer.</b></p>
