@@ -1,6 +1,6 @@
 # The3rdEye
 Snap camera shots from a target's phone or PC webcam with nothing more than a link.
-![The3rdEye](The3rdEye.png)
+![The3rdEye](The3rdEye-logo.png)
 
 # What is The3rdEye?
 <p>The3rdEye spins up a decoy webpage on an integrated PHP server and punches it out to the internet using Localhost, CloudFlare Tunnel, or Localhost.run. You send the generated link to a target; if they grant camera access, their photo is captured instantly. A built-in GPS locator can also pull their physical coordinates during the session.</p>
